@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import InputContact from "./phonecontact/InputContact";
-
+import AllContact from "./phonecontact/AllContact";
 function AdminPanel({ setAuth }) {
-  const [infos, setInfos] = useState({
-    user_name: "",
-    user_phone: "",
-    contact_name: "",
-    contact_number: "",
+  const [infos, setInfos] = useState([]);
+  const [adminInfo, setadminInfo] = useState({
+    adminName: "",
+    adminPhone: "",
   });
+
+  const { adminName, adminPhone } = adminInfo;
 
   const handleLogOut = async (e) => {
     e.preventDefault();
@@ -27,12 +28,11 @@ function AdminPanel({ setAuth }) {
       headers: { token: localStorage.token },
     });
     const parseRes = await res.json();
-    const { user_name, phone_number } = parseRes[0];
-    console.log(parseRes);
-    setInfos({
-      ...infos,
-      user_name: user_name,
-      user_phone: phone_number,
+    setInfos(parseRes);
+    setadminInfo({
+      ...adminInfo,
+      adminName: parseRes[0].user_name,
+      adminPhone: parseRes[0].phone_number,
     });
   };
 
@@ -40,13 +40,13 @@ function AdminPanel({ setAuth }) {
 
   return (
     <div>
-      <h1> Hello, {infos.user_name}</h1>
-      <h2>{infos.user_phone}</h2>
+      <h1>Hello, {adminName}</h1>
+      <h2>{adminPhone}</h2>
       <button className='btn btn-primary' onClick={(e) => handleLogOut(e)}>
         Log Out
       </button>
 
-      <InputContact name={infos.user_name} />
+      <AllContact infos={infos} />
     </div>
   );
 }
