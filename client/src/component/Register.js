@@ -72,6 +72,9 @@ function Register({ setAuth }) {
             required
             onChange={(e) => handleonChange(e)}
           />{" "}
+          <small className='text-muted'>
+            We'll never share your phone with anyone else.
+          </small>
         </div>
 
         <div className='form-group'>
@@ -87,6 +90,9 @@ function Register({ setAuth }) {
             required
             onChange={(e) => handleonChange(e)}
           />
+          <small className='text-muted'>
+            We'll never share your email with anyone else.
+          </small>
         </div>
 
         <div class='form-group'>

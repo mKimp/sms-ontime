@@ -12,12 +12,10 @@ function Login({ setAuth }) {
 
   const onChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
-    console.log("HIT CGHANGE");
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("HIT SUBMIT");
     try {
       const body = { email, password };
       const res = await fetch("http://localhost:5000/auth/login", {
