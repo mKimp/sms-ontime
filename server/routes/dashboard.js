@@ -1,13 +1,14 @@
 const router = require("express").Router();
 const authorization = require("../middleware/authorization");
 const pool = require("../database/dbconfig");
+const sendSms = require("../middleware/SendSMS");
 
 // all phone contacts
 router.get("/", authorization, async (req, res) => {
   try {
     const userId = req.user;
     const user = await pool.query(
-      "SELECT u.user_name, u.phone_number, c.contact_name, c.contact_number FROM users AS u LEFT JOIN user_contacts AS c ON u.user_id = c.user_id WHERE u.user_id = $1",
+      "SELECT u.user_name, u.phone_number, c.phone_id, c.contact_name, c.contact_number FROM users AS u LEFT JOIN user_contacts AS c ON u.user_id = c.user_id WHERE u.user_id = $1",
       [userId]
     );
     res.json(user.rows);
@@ -45,7 +46,7 @@ router.put("/contacts/:id", authorization, async (req, res) => {
     }
     res.json(updateContact.rows[0]);
   } catch (error) {
-    res.status(500).send("Server error");
+    res.status(500).send("Server error from editing");
   }
 });
 
@@ -67,4 +68,16 @@ router.delete("/contacts/:id", authorization, async (req, res) => {
   }
 });
 
+router.post("/contacts/sms", authorization, async (req, res) => {
+  try {
+    const { sender, phone, message } = req.body;
+    console.log(sender + "" + phone + "" + message);
+    sendSms(sender, phone, message);
+    res.status(201).send({
+      message: "Message is sent!",
+    });
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;

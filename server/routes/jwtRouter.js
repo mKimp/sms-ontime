@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
 
       //generate our jwt token
       const token = jwtGenerator(newUser.rows[0].user_id);
-      res.json(token);
+      res.json({ token });
     }
   } catch (error) {
     res.status(500).send("Server error in registering");
@@ -57,14 +57,14 @@ router.post("/login", async (req, res) => {
       return res.status(401).json("Invalid pass");
     }
     const token = jwtGenerator(user.rows[0].user_id);
-    res.json(token);
+    res.json({ token });
   } catch (error) {
     res.status(500).send("Server error");
   }
 });
 
 //verify if the user is who they are by checking the token
-router.get("/is-verified", authorization, async (req, res) => {
+router.post("/is-verified", authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (error) {
