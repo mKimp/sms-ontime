@@ -71,7 +71,6 @@ router.delete("/contacts/:id", authorization, async (req, res) => {
 router.post("/contacts/sms", authorization, async (req, res) => {
   try {
     const { sender, phone, message } = req.body;
-    console.log(sender + "" + phone + "" + message);
     sendSms(sender, phone, message);
     res.status(201).send({
       message: "Message is sent!",

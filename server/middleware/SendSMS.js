@@ -8,7 +8,7 @@ const sendSms = (sender, phone, message) => {
     const client = require("twilio")(accountSid, authToken);
     client.messages
       .create({
-        body: ` ${message}. `,
+        body: `${message}. No reply pls`,
         from: sender,
         to: phone,
       })
